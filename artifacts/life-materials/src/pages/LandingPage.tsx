@@ -69,7 +69,7 @@ const services = [
     ],
     tiers: [
       { label: "Simple Bot", price: "$20", note: "Basic commands & auto-responses" },
-      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with dashboard" },
+      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with advanced commands" },
       { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations" },
     ],
     badge: "Free Hosting",
@@ -122,10 +122,10 @@ const services = [
     title: "Bot Setup Support",
     summary: "Already have a bot? We'll get it running perfectly.",
     description:
-      "Already own a bot or purchased one from a marketplace? We'll configure it correctly for your server — setting up commands, linking dashboards, setting permissions, and integrating it with your existing setup so everything works together seamlessly.",
+      "Already own a bot or purchased one from a marketplace? We'll configure it correctly for your server — setting up commands, setting permissions, and integrating it with your existing setup so everything works together seamlessly.",
     includes: [
       "Bot configuration & commands",
-      "Dashboard & panel setup",
+      "Command & prefix setup",
       "Permission linking",
       "Integration with server roles",
       "Testing & verification",
@@ -210,6 +210,100 @@ const otherOptions = [
   },
 ];
 
+const CURRENCIES = [
+  { code: "USD", symbol: "$",   label: "US Dollar" },
+  { code: "EUR", symbol: "€",   label: "Euro" },
+  { code: "GBP", symbol: "£",   label: "British Pound" },
+  { code: "CAD", symbol: "C$",  label: "Canadian Dollar" },
+  { code: "AUD", symbol: "A$",  label: "Australian Dollar" },
+  { code: "NZD", symbol: "NZ$", label: "New Zealand Dollar" },
+  { code: "SGD", symbol: "S$",  label: "Singapore Dollar" },
+  { code: "JPY", symbol: "¥",   label: "Japanese Yen" },
+  { code: "INR", symbol: "₹",   label: "Indian Rupee" },
+  { code: "PHP", symbol: "₱",   label: "Philippine Peso" },
+  { code: "BRL", symbol: "R$",  label: "Brazilian Real" },
+  { code: "MXN", symbol: "MX$", label: "Mexican Peso" },
+  { code: "ZAR", symbol: "R",   label: "South African Rand" },
+  { code: "NGN", symbol: "₦",   label: "Nigerian Naira" },
+];
+
+function detectCurrency(): string {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (!tz) return "USD";
+    const [region, city] = tz.split("/");
+    if (region === "Europe") {
+      if (city === "London" || city === "Dublin" || city === "Belfast") return "GBP";
+      return "EUR";
+    }
+    if (region === "America") {
+      if (city?.startsWith("Toronto") || city === "Vancouver" || city === "Winnipeg" || city === "Halifax") return "CAD";
+      if (city === "Sao_Paulo" || city === "Manaus" || city === "Fortaleza") return "BRL";
+      if (city === "Mexico_City" || city === "Monterrey") return "MXN";
+      return "USD";
+    }
+    if (region === "Australia") return "AUD";
+    if (region === "Pacific") return "NZD";
+    if (region === "Asia") {
+      if (city === "Kolkata" || city === "Calcutta") return "INR";
+      if (city === "Tokyo") return "JPY";
+      if (city === "Manila") return "PHP";
+      if (city === "Singapore") return "SGD";
+    }
+    if (region === "Africa") {
+      if (city === "Lagos" || city === "Abuja") return "NGN";
+      if (city === "Johannesburg" || city === "Cape_Town") return "ZAR";
+    }
+  } catch {
+    // ignore
+  }
+  return "USD";
+}
+
+function formatPrice(raw: string, rates: Record<string, number>, currency: string): string {
+  if (raw === "Free" || raw === "Quote") return raw;
+  const num = parseFloat(raw.replace(/[^0-9.]/g, ""));
+  if (isNaN(num)) return raw;
+  const rate = currency === "USD" ? 1 : (rates[currency] ?? 1);
+  const converted = num * rate;
+  const cur = CURRENCIES.find((c) => c.code === currency);
+  const symbol = cur?.symbol ?? "$";
+  if (currency === "JPY") return `${symbol}${Math.round(converted).toLocaleString()}`;
+  if (currency === "NGN" || currency === "INR" || currency === "PHP") {
+    return `${symbol}${Math.round(converted).toLocaleString()}`;
+  }
+  return `${symbol}${converted.toFixed(2)}`;
+}
+
+function CurrencySelector({
+  currency,
+  onChange,
+}: {
+  currency: string;
+  onChange: (code: string) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-muted-foreground whitespace-nowrap">Currency:</span>
+      <div className="relative">
+        <select
+          value={currency}
+          onChange={(e) => onChange(e.target.value)}
+          data-testid="select-currency"
+          className="appearance-none bg-card border border-border rounded-lg pl-3 pr-8 py-1.5 text-sm font-medium text-foreground cursor-pointer hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors"
+        >
+          {CURRENCIES.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.symbol} {c.code} — {c.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+      </div>
+    </div>
+  );
+}
+
 const faqs = [
   {
     question: "How do I place an order?",
@@ -284,7 +378,15 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
-function ServiceCard({ service }: { service: (typeof services)[0] }) {
+function ServiceCard({
+  service,
+  currency,
+  rates,
+}: {
+  service: (typeof services)[0];
+  currency: string;
+  rates: Record<string, number>;
+}) {
   const [open, setOpen] = useState(false);
   const Icon = service.icon;
 
@@ -361,7 +463,7 @@ function ServiceCard({ service }: { service: (typeof services)[0] }) {
                     <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                       {tier.label}
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-1">{tier.price}</div>
+                    <div className="text-2xl font-bold text-foreground mb-1">{formatPrice(tier.price, rates, currency)}</div>
                     <div className="text-xs text-muted-foreground leading-snug">{tier.note}</div>
                   </div>
                 ))}
@@ -387,6 +489,14 @@ function ServiceCard({ service }: { service: (typeof services)[0] }) {
 }
 
 export default function LandingPage() {
+  const [currency, setCurrency] = useState<string>(() => detectCurrency());
+
+  const rates: Record<string, number> = {
+    EUR: 0.92, GBP: 0.79, CAD: 1.36, AUD: 1.54, NZD: 1.68,
+    SGD: 1.34, JPY: 155.4, INR: 83.5, PHP: 57.8,
+    BRL: 5.05, MXN: 17.2, ZAR: 18.6, NGN: 1610,
+  };
+
   return (
     <div className="min-h-[100dvh] flex flex-col w-full overflow-x-hidden bg-background">
       {/* Navbar */}
@@ -532,13 +642,19 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <p className="text-center text-sm text-muted-foreground mb-12">
-            Click any service card to see full details, what's included, and pricing.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-4xl mx-auto mb-8">
+            <p className="text-sm text-muted-foreground">
+              Click any card to see full details, what's included, and pricing.
+            </p>
+            <CurrencySelector
+              currency={currency}
+              onChange={setCurrency}
+            />
+          </div>
 
           <div className="flex flex-col gap-4 max-w-4xl mx-auto">
             {services.map((service) => (
-              <ServiceCard key={service.id} service={service} />
+              <ServiceCard key={service.id} service={service} currency={currency} rates={rates} />
             ))}
           </div>
         </div>
