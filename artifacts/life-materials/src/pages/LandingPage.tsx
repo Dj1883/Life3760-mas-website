@@ -46,9 +46,9 @@ const services = [
       "Custom branding & styling",
     ],
     tiers: [
-      { label: "Basic", price: "Free", note: "Self-guided template + tips via Discord" },
-      { label: "Standard", price: "$15", note: "Full setup handled by our team" },
-      { label: "Premium", price: "$35", note: "Advanced setup with custom branding & bots" },
+      { label: "Basic", price: "Free", note: "Self-guided template + tips via Discord", recommended: false, bestValue: false },
+      { label: "Standard", price: "$15", note: "Full setup handled by our team", recommended: true, bestValue: false },
+      { label: "Premium", price: "$35", note: "Advanced setup with custom branding & bots", recommended: false, bestValue: true },
     ],
     badge: null,
   },
@@ -68,9 +68,9 @@ const services = [
       "Lifetime free hosting included",
     ],
     tiers: [
-      { label: "Simple Bot", price: "$4", note: "Basic commands & auto-responses" },
-      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with advanced commands" },
-      { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations" },
+      { label: "Simple Bot", price: "$4", note: "Basic commands & auto-responses", recommended: true, bestValue: false },
+      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with advanced commands", recommended: false, bestValue: true },
+      { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations", recommended: false, bestValue: false },
     ],
     badge: "Free Hosting",
   },
@@ -90,8 +90,8 @@ const services = [
       "Ready-to-paste text formats",
     ],
     tiers: [
-      { label: "Community Pack", price: "Free", note: "Standard templates via Discord" },
-      { label: "Custom Pack", price: "$10", note: "Tailored to your brand & niche" },
+      { label: "Community Pack", price: "Free", note: "Standard templates via Discord", recommended: true, bestValue: false },
+      { label: "Custom Pack", price: "$10", note: "Tailored to your brand & niche", recommended: false, bestValue: true },
     ],
     badge: null,
   },
@@ -111,8 +111,8 @@ const services = [
       "Basic bot setup included",
     ],
     tiers: [
-      { label: "Standard Prebuilt", price: "Free", note: "Pick from available templates" },
-      { label: "Custom Prebuilt", price: "$25", note: "Built to your niche & requirements" },
+      { label: "Standard Prebuilt", price: "Free", note: "Pick from available templates", recommended: true, bestValue: false },
+      { label: "Custom Prebuilt", price: "$25", note: "Built to your niche & requirements", recommended: false, bestValue: true },
     ],
     badge: null,
   },
@@ -132,8 +132,8 @@ const services = [
       "Post-setup guidance",
     ],
     tiers: [
-      { label: "Basic Config", price: "Free", note: "Single bot, standard setup" },
-      { label: "Full Integration", price: "$10", note: "Multi-bot, advanced configuration" },
+      { label: "Basic Config", price: "Free", note: "Single bot, standard setup", recommended: true, bestValue: false },
+      { label: "Full Integration", price: "$10", note: "Multi-bot, advanced configuration", recommended: false, bestValue: true },
     ],
     badge: null,
   },
@@ -153,7 +153,7 @@ const services = [
       "Community Q&A access",
     ],
     tiers: [
-      { label: "Community Help", price: "Free", note: "Ask anything in our Discord server" },
+      { label: "Community Help", price: "Free", note: "Ask anything in our Discord server", recommended: true, bestValue: false },
     ],
     badge: "Always Free",
   },
@@ -457,16 +457,28 @@ function ServiceCard({
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {service.tiers.map((tier, i) => (
+                {service.tiers.map((tier) => (
                   <div
                     key={tier.label}
-                    className={`rounded-xl p-4 border text-center ${
-                      i === 1 && service.tiers.length > 1
-                        ? "border-primary/50 bg-primary/8 shadow-md"
+                    className={`relative rounded-xl p-4 border text-center ${
+                      tier.recommended
+                        ? "border-primary/60 bg-primary/8 shadow-md"
+                        : tier.bestValue
+                        ? "border-emerald-500/50 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-md"
                         : "border-border bg-secondary/50"
                     }`}
                   >
-                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                    {tier.recommended && (
+                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap inline-flex items-center gap-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
+                        ★ Recommended
+                      </span>
+                    )}
+                    {tier.bestValue && (
+                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap inline-flex items-center gap-1 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
+                        ✦ Best Value
+                      </span>
+                    )}
+                    <div className={`text-xs font-semibold uppercase tracking-wider mb-1 ${tier.recommended ? "text-primary" : tier.bestValue ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>
                       {tier.label}
                     </div>
                     <div className="text-2xl font-bold text-foreground mb-1">{formatPrice(tier.price, rates, currency)}</div>
