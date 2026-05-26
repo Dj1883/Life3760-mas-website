@@ -25,6 +25,7 @@ import {
   Lightbulb,
   Shield,
   RefreshCw,
+  HelpCircle,
 } from "lucide-react";
 import logoSrc from "@assets/lv_0_20260525183834_1779812038578.jpg";
 
@@ -209,6 +210,80 @@ const otherOptions = [
   },
 ];
 
+const faqs = [
+  {
+    question: "How do I place an order?",
+    answer:
+      "Everything starts in our Discord server. Join using the link on this page, open a ticket or message the team, and describe what you need. We'll confirm details and get started from there — no complicated forms or sign-ups required.",
+  },
+  {
+    question: "How long does a server setup take?",
+    answer:
+      "Basic setups are typically completed within 24–48 hours. Standard and Premium setups can take 2–4 days depending on complexity and how much custom work is involved. We'll give you a clear timeline when you reach out.",
+  },
+  {
+    question: "How long does bot development take?",
+    answer:
+      "Simple bots with basic commands are usually delivered within 1–3 days. More advanced bots with multiple features, dashboards, or API integrations can take 5–10 days. Complex custom projects are scoped individually and we'll agree on a delivery timeline upfront.",
+  },
+  {
+    question: "How do payments work?",
+    answer:
+      "Payments are handled through Discord — we'll send you an invoice or payment link once we've agreed on the scope and price. Free services require no payment at all. For paid work, payment is typically taken upfront or split depending on project size.",
+  },
+  {
+    question: "What does 'free bot hosting for life' actually mean?",
+    answer:
+      "Any bot we build or set up for you is hosted on our infrastructure at zero cost — forever. There are no monthly fees, no renewal charges, and no conditions. As long as Life3760 is running, your bot stays online.",
+  },
+  {
+    question: "Can I request changes after the work is done?",
+    answer:
+      "Yes. Minor adjustments and tweaks after delivery are included at no extra charge. Larger changes or additions to scope are handled as a new request, and we'll give you a fair price for the extra work.",
+  },
+  {
+    question: "Do you work with existing servers or only new ones?",
+    answer:
+      "Both. We can build a brand new server from scratch or revamp and restructure an existing one. For existing servers, we work carefully to preserve your current members, channels, and history while improving the overall setup.",
+  },
+  {
+    question: "What if I'm not happy with the result?",
+    answer:
+      "We work with you until you're satisfied. If something isn't right, just let us know in Discord and we'll fix it. Our goal is for your server or bot to work exactly the way you need it — we don't consider a job done until you do.",
+  },
+];
+
+function FaqItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className={`rounded-xl border transition-all duration-200 ${
+        open ? "border-primary/50 bg-primary/5" : "border-border bg-card"
+      }`}
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between gap-4 p-6 text-left"
+        data-testid={`button-faq-${question.slice(0, 20).toLowerCase().replace(/\s+/g, "-")}`}
+      >
+        <span className="font-semibold text-foreground text-base leading-snug">{question}</span>
+        <span className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+          {open ? (
+            <ChevronUp className="w-4 h-4 text-primary" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          )}
+        </span>
+      </button>
+      {open && (
+        <div className="px-6 pb-6">
+          <p className="text-muted-foreground leading-relaxed">{answer}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ServiceCard({ service }: { service: (typeof services)[0] }) {
   const [open, setOpen] = useState(false);
   const Icon = service.icon;
@@ -353,6 +428,13 @@ export default function LandingPage() {
               data-testid="link-nav-other"
             >
               More
+            </a>
+            <a
+              href="#faq"
+              className="text-foreground/80 hover:text-primary transition-colors"
+              data-testid="link-nav-faq"
+            >
+              FAQ
             </a>
             <a
               href="#about"
@@ -576,8 +658,47 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20 mb-2">
+              <HelpCircle className="w-4 h-4" />
+              <span>Common Questions</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Everything you need to know before getting started. Still have questions? Ask us directly in Discord.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto flex flex-col gap-3">
+            {faqs.map((faq) => (
+              <FaqItem key={faq.question} question={faq.question} answer={faq.answer} />
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-muted-foreground mb-6">Still have a question we didn't cover?</p>
+            <a
+              href="https://discord.gg/cgs76nsZAa"
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-faq-discord"
+            >
+              <Button variant="outline" size="lg" className="rounded-full gap-2 border-2 hover:bg-secondary h-12 px-8">
+                <SiDiscord className="w-5 h-5 text-primary" />
+                Ask in Discord
+              </Button>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* About */}
-      <section id="about" className="py-24">
+      <section id="about" className="py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-2">
