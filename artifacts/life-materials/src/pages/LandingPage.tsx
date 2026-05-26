@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { SiDiscord } from "react-icons/si";
 import {
@@ -26,6 +26,8 @@ import {
   Shield,
   RefreshCw,
   HelpCircle,
+  Moon,
+  Sun,
 } from "lucide-react";
 import logoSrc from "@assets/lv_0_20260525183834_1779812038578.jpg";
 
@@ -507,6 +509,18 @@ function ServiceCard({
 }
 
 export default function LandingPage() {
+  const [dark, setDark] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const stored = localStorage.getItem("theme");
+    if (stored) return stored === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
+
   const [currency, setCurrency] = useState<string>(() => detectCurrency());
 
   const rates: Record<string, number> = {
@@ -580,7 +594,15 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setDark(!dark)}
+              aria-label="Toggle dark mode"
+              data-testid="button-toggle-dark"
+              className="w-9 h-9 rounded-full flex items-center justify-center border border-border bg-secondary hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-colors"
+            >
+              {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
             <a
               href="https://discord.life3760-mas.org"
               target="_blank"
