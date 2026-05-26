@@ -489,7 +489,7 @@ function ServiceCard({
             </div>
 
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid={`link-service-discord-${service.id}`}
@@ -582,7 +582,7 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-4">
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid="link-nav-discord"
@@ -620,7 +620,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <a
-                href="https://discord.gg/cgs76nsZAa"
+                href="https://discord.life3760-mas.org"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-hero-discord"
@@ -778,7 +778,7 @@ export default function LandingPage() {
               Don't see what you need? Just ask — we handle a wide range of custom work.
             </p>
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid="link-other-discord"
@@ -817,7 +817,7 @@ export default function LandingPage() {
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-6">Still have a question we didn't cover?</p>
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid="link-faq-discord"
@@ -866,7 +866,7 @@ export default function LandingPage() {
             </p>
             <div className="pt-8">
               <a
-                href="https://discord.gg/cgs76nsZAa"
+                href="https://discord.life3760-mas.org"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-cta-discord"
@@ -897,7 +897,7 @@ export default function LandingPage() {
                 response.
               </p>
               <a
-                href="https://discord.gg/cgs76nsZAa"
+                href="https://discord.life3760-mas.org"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-contact-discord"
@@ -930,7 +930,7 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-6">
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
