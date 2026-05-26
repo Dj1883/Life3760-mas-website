@@ -68,7 +68,7 @@ const services = [
       "Lifetime free hosting included",
     ],
     tiers: [
-      { label: "Simple Bot", price: "$20", note: "Basic commands & auto-responses" },
+      { label: "Simple Bot", price: "$4", note: "Basic commands & auto-responses" },
       { label: "Feature Bot", price: "$45", note: "Multi-feature bot with advanced commands" },
       { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations" },
     ],
@@ -447,9 +447,15 @@ function ServiceCard({
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">
                 Pricing
               </h4>
+              <div className="flex items-start gap-2 mb-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2.5">
+                <span className="text-amber-500 mt-0.5 flex-shrink-0">⚠</span>
+                <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug font-medium">
+                  Paid plans and options coming soon! Until then, all features are free.
+                </p>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {service.tiers.map((tier, i) => (
                   <div
