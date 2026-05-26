@@ -1,18 +1,315 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SiDiscord } from "react-icons/si";
-import { 
-  Server, 
-  Bot, 
-  Package, 
-  Layers, 
-  Wrench, 
+import {
+  Server,
+  Bot,
+  Package,
+  Layers,
+  Wrench,
   MessageSquare,
   ChevronRight,
   ShieldCheck,
   Zap,
-  Globe
+  Globe,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Star,
+  Sparkles,
+  Users,
+  Settings,
+  Headphones,
+  FileText,
+  Clock,
+  Lightbulb,
+  Shield,
+  RefreshCw,
 } from "lucide-react";
 import logoSrc from "@assets/lv_0_20260525183834_1779812038578.jpg";
+
+const services = [
+  {
+    id: "server-setups",
+    icon: Server,
+    title: "Discord Server Setups",
+    summary: "Full server configuration tailored to your community.",
+    description:
+      "We build your Discord server from the ground up — channels, categories, roles, permissions, verification flows, welcome systems, and custom branding. Every setup is designed specifically for your community type, whether it's gaming, business, content creation, or general community.",
+    includes: [
+      "Channel & category structure",
+      "Role hierarchy & permissions",
+      "Verification & welcome flow",
+      "Server rules & info setup",
+      "Bot integrations (basic)",
+      "Custom branding & styling",
+    ],
+    tiers: [
+      { label: "Basic", price: "Free", note: "Self-guided template + tips via Discord" },
+      { label: "Standard", price: "$15", note: "Full setup handled by our team" },
+      { label: "Premium", price: "$35", note: "Advanced setup with custom branding & bots" },
+    ],
+    badge: null,
+  },
+  {
+    id: "custom-bots",
+    icon: Bot,
+    title: "Custom Bot Development",
+    summary: "Purpose-built bots designed around your server.",
+    description:
+      "We develop Discord bots tailored to exactly what your server needs — from moderation and auto-roles to economy systems, ticket systems, and complex custom commands. All bots are written cleanly, built to last, and hosted free for life after delivery.",
+    includes: [
+      "Custom command design",
+      "Moderation & auto-mod",
+      "Ticket & support systems",
+      "Economy & leveling systems",
+      "Role assignment automation",
+      "Lifetime free hosting included",
+    ],
+    tiers: [
+      { label: "Simple Bot", price: "$20", note: "Basic commands & auto-responses" },
+      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with dashboard" },
+      { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations" },
+    ],
+    badge: "Free Hosting",
+  },
+  {
+    id: "server-materials",
+    icon: Package,
+    title: "Server Materials",
+    summary: "Templates, graphics, and assets for your server.",
+    description:
+      "Get access to ready-made materials that make your server look polished and professional. This includes channel templates, rule formats, embed designs, banner graphics, and onboarding resources. Save hours of design work and launch with a server that looks built for scale.",
+    includes: [
+      "Channel & category templates",
+      "Formatted rule & info embeds",
+      "Onboarding resource packs",
+      "Server banner & icon guidance",
+      "Role color palettes",
+      "Ready-to-paste text formats",
+    ],
+    tiers: [
+      { label: "Community Pack", price: "Free", note: "Standard templates via Discord" },
+      { label: "Custom Pack", price: "$10", note: "Tailored to your brand & niche" },
+    ],
+    badge: null,
+  },
+  {
+    id: "prebuilt-servers",
+    icon: Layers,
+    title: "Prebuilt Servers",
+    summary: "Fully configured server packages, ready to launch.",
+    description:
+      "Choose from a library of prebuilt server templates for the most popular community types. Each prebuilt includes a working channel structure, roles, permissions, and basic bots pre-configured. Just transfer ownership and you're ready to invite members.",
+    includes: [
+      "Gaming community template",
+      "Content creator template",
+      "Business / brand template",
+      "Study / education template",
+      "Pre-configured roles & channels",
+      "Basic bot setup included",
+    ],
+    tiers: [
+      { label: "Standard Prebuilt", price: "Free", note: "Pick from available templates" },
+      { label: "Custom Prebuilt", price: "$25", note: "Built to your niche & requirements" },
+    ],
+    badge: null,
+  },
+  {
+    id: "bot-setup",
+    icon: Wrench,
+    title: "Bot Setup Support",
+    summary: "Already have a bot? We'll get it running perfectly.",
+    description:
+      "Already own a bot or purchased one from a marketplace? We'll configure it correctly for your server — setting up commands, linking dashboards, setting permissions, and integrating it with your existing setup so everything works together seamlessly.",
+    includes: [
+      "Bot configuration & commands",
+      "Dashboard & panel setup",
+      "Permission linking",
+      "Integration with server roles",
+      "Testing & verification",
+      "Post-setup guidance",
+    ],
+    tiers: [
+      { label: "Basic Config", price: "Free", note: "Single bot, standard setup" },
+      { label: "Full Integration", price: "$10", note: "Multi-bot, advanced configuration" },
+    ],
+    badge: null,
+  },
+  {
+    id: "discord-help",
+    icon: MessageSquare,
+    title: "General Discord Help",
+    summary: "Open support for any Discord question or issue.",
+    description:
+      "Have a question about Discord permissions? Not sure how to set up a feature? Running into an issue you can't figure out? Our team is in the Discord server regularly and happy to help with anything — no ticket, no wait queue, just real answers.",
+    includes: [
+      "Permission troubleshooting",
+      "Feature explanation & how-tos",
+      "Bot recommendation guidance",
+      "Server growth tips",
+      "Audit log & moderation help",
+      "Community Q&A access",
+    ],
+    tiers: [
+      { label: "Community Help", price: "Free", note: "Ask anything in our Discord server" },
+    ],
+    badge: "Always Free",
+  },
+];
+
+const otherOptions = [
+  {
+    icon: Settings,
+    title: "Server Audit & Review",
+    description:
+      "We review your existing Discord server and give you a detailed breakdown of what to improve — structure, permissions, moderation gaps, and growth opportunities.",
+  },
+  {
+    icon: Users,
+    title: "Role Hierarchy Design",
+    description:
+      "Full design of your server's role system — staff tiers, member progression, booster perks, and special roles — built to scale as your community grows.",
+  },
+  {
+    icon: Headphones,
+    title: "Onboarding Flow Design",
+    description:
+      "Custom member onboarding: verification steps, welcome embeds, rule acceptance flows, and first-impression channel design to retain new members.",
+  },
+  {
+    icon: FileText,
+    title: "Staff & Rules Templates",
+    description:
+      "Professional staff application formats, server rule templates, and moderation guidelines — written and formatted to match your server's tone and needs.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Server Growth Consulting",
+    description:
+      "Strategic advice on growing your Discord community — partnerships, listing platforms, engagement loops, and event ideas that actually bring in members.",
+  },
+  {
+    icon: Shield,
+    title: "Moderation System Setup",
+    description:
+      "End-to-end moderation infrastructure: auto-mod rules, report systems, staff logging, ban/kick workflows, and anti-raid protection layers.",
+  },
+  {
+    icon: RefreshCw,
+    title: "Server Revamp",
+    description:
+      "Already have a server but it needs a fresh start? We restructure and redesign your existing setup without losing your members or history.",
+  },
+  {
+    icon: Clock,
+    title: "Priority Support",
+    description:
+      "Need something done fast? Priority support bumps your request to the front of the queue with guaranteed same-day response for urgent setups or fixes.",
+  },
+];
+
+function ServiceCard({ service }: { service: (typeof services)[0] }) {
+  const [open, setOpen] = useState(false);
+  const Icon = service.icon;
+
+  return (
+    <div
+      className={`group bg-card rounded-2xl border transition-all duration-300 shadow-sm ${
+        open
+          ? "border-primary/60 shadow-xl"
+          : "border-border hover:shadow-xl hover:border-primary/40"
+      }`}
+      data-testid={`card-service-${service.id}`}
+    >
+      <div className="p-8">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <Icon className="w-7 h-7 text-primary" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-xl font-bold text-foreground">{service.title}</h3>
+                {service.badge && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary text-xs font-semibold border border-primary/25">
+                    <Star className="w-3 h-3" />
+                    {service.badge}
+                  </span>
+                )}
+              </div>
+              <p className="text-muted-foreground mt-1 text-sm">{service.summary}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex-shrink-0 w-9 h-9 rounded-full bg-secondary flex items-center justify-center hover:bg-primary/15 hover:text-primary transition-colors mt-1"
+            data-testid={`button-toggle-${service.id}`}
+            aria-label={open ? "Collapse" : "Expand"}
+          >
+            {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {open && (
+          <div className="mt-8 space-y-8 border-t border-border/60 pt-8">
+            <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+
+            <div>
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
+                What's Included
+              </h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {service.includes.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
+                Pricing
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {service.tiers.map((tier, i) => (
+                  <div
+                    key={tier.label}
+                    className={`rounded-xl p-4 border text-center ${
+                      i === 1 && service.tiers.length > 1
+                        ? "border-primary/50 bg-primary/8 shadow-md"
+                        : "border-border bg-secondary/50"
+                    }`}
+                  >
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                      {tier.label}
+                    </div>
+                    <div className="text-2xl font-bold text-foreground mb-1">{tier.price}</div>
+                    <div className="text-xs text-muted-foreground leading-snug">{tier.note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <a
+              href="https://discord.gg/life3760"
+              target="_blank"
+              rel="noreferrer"
+              data-testid={`link-service-discord-${service.id}`}
+            >
+              <Button size="sm" className="rounded-full gap-2 mt-2">
+                <SiDiscord className="w-4 h-4" />
+                Get Started on Discord
+              </Button>
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function LandingPage() {
   return (
@@ -20,22 +317,66 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3 transition-opacity hover:opacity-80" data-testid="link-home">
-            <img src={logoSrc} alt="Life3760 Logo" className="h-10 w-auto rounded-md object-contain bg-primary" />
+          <a
+            href="#"
+            className="flex items-center gap-3 transition-opacity hover:opacity-80"
+            data-testid="link-home"
+          >
+            <img
+              src={logoSrc}
+              alt="Life3760 Logo"
+              className="h-10 w-auto rounded-md object-contain bg-primary"
+            />
             <span className="font-bold text-lg hidden sm:inline-block tracking-tight text-foreground">
               Life3760 <span className="text-primary">Services</span>
             </span>
           </a>
-          
+
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <a href="#services" className="text-foreground/80 hover:text-primary transition-colors" data-testid="link-nav-services">Services</a>
-            <a href="#pricing" className="text-foreground/80 hover:text-primary transition-colors" data-testid="link-nav-pricing">Pricing</a>
-            <a href="#about" className="text-foreground/80 hover:text-primary transition-colors" data-testid="link-nav-about">About</a>
-            <a href="#contact" className="text-foreground/80 hover:text-primary transition-colors" data-testid="link-nav-contact">Contact</a>
+            <a
+              href="#services"
+              className="text-foreground/80 hover:text-primary transition-colors"
+              data-testid="link-nav-services"
+            >
+              Services
+            </a>
+            <a
+              href="#pricing"
+              className="text-foreground/80 hover:text-primary transition-colors"
+              data-testid="link-nav-pricing"
+            >
+              Pricing
+            </a>
+            <a
+              href="#other"
+              className="text-foreground/80 hover:text-primary transition-colors"
+              data-testid="link-nav-other"
+            >
+              More
+            </a>
+            <a
+              href="#about"
+              className="text-foreground/80 hover:text-primary transition-colors"
+              data-testid="link-nav-about"
+            >
+              About
+            </a>
+            <a
+              href="#contact"
+              className="text-foreground/80 hover:text-primary transition-colors"
+              data-testid="link-nav-contact"
+            >
+              Contact
+            </a>
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="https://discord.gg/life3760" target="_blank" rel="noreferrer" data-testid="link-nav-discord">
+            <a
+              href="https://discord.gg/life3760"
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-nav-discord"
+            >
               <Button variant="default" size="sm" className="gap-2 rounded-full font-semibold shadow-md">
                 <SiDiscord className="w-4 h-4" />
                 <span className="hidden sm:inline-block">Discord</span>
@@ -54,25 +395,40 @@ export default function LandingPage() {
               <ShieldCheck className="w-4 h-4" />
               <span>Trusted Discord Experts</span>
             </div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
-              Life3760 <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Material & Services</span>
+              Life3760 <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">
+                Material & Services
+              </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Professional Discord services — server setups, custom bots, and technical support for your community.
+              Professional Discord services — server setups, custom bots, and technical support for
+              your community.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <a href="https://discord.gg/life3760" target="_blank" rel="noreferrer" data-testid="link-hero-discord">
-                <Button size="lg" className="w-full sm:w-auto gap-2 rounded-full text-base h-14 px-8 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-1">
+              <a
+                href="https://discord.gg/life3760"
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-hero-discord"
+              >
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto gap-2 rounded-full text-base h-14 px-8 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-1"
+                >
                   <SiDiscord className="w-5 h-5" />
                   Join Our Discord
                 </Button>
               </a>
               <a href="#services" data-testid="link-hero-services">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2 rounded-full text-base h-14 px-8 border-2 hover:bg-secondary transition-all">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto gap-2 rounded-full text-base h-14 px-8 border-2 hover:bg-secondary transition-all"
+                >
                   View Services
                   <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </Button>
@@ -85,76 +441,38 @@ export default function LandingPage() {
       {/* Services */}
       <section id="services" className="py-24 bg-secondary/30">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">What We Offer</h2>
-            <p className="text-muted-foreground text-lg">Everything you need to build, scale, and automate your Discord community.</p>
+          <div className="text-center max-w-2xl mx-auto mb-6 space-y-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              What We Offer
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Everything you need to build, scale, and automate your Discord community.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* Card 1 */}
-            <div className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Server className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Discord Server Setups</h3>
-              <p className="text-muted-foreground leading-relaxed">Full server configuration, channels, roles, permissions, and branding tailored to your community.</p>
-            </div>
+          <p className="text-center text-sm text-muted-foreground mb-12">
+            Click any service card to see full details, what's included, and pricing.
+          </p>
 
-            {/* Card 2 */}
-            <div className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Bot className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Custom Bot Development</h3>
-              <p className="text-muted-foreground leading-relaxed">Purpose-built Discord bots designed around your server's needs and workflows.</p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Package className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Server Materials</h3>
-              <p className="text-muted-foreground leading-relaxed">Ready-to-use templates, graphics, and assets to level up your server instantly.</p>
-            </div>
-
-            {/* Card 4 */}
-            <div className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Layers className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Prebuilt Servers</h3>
-              <p className="text-muted-foreground leading-relaxed">Fully configured, ready-to-go server packages for popular community types.</p>
-            </div>
-
-            {/* Card 5 */}
-            <div className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Wrench className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">Bot Setup Support</h3>
-              <p className="text-muted-foreground leading-relaxed">Already have a bot? We'll configure and integrate it perfectly into your server.</p>
-            </div>
-
-            {/* Card 6 */}
-            <div className="group bg-card rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300">
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <MessageSquare className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">General Discord Help</h3>
-              <p className="text-muted-foreground leading-relaxed">Questions, troubleshooting, tips — open help for anything Discord-related.</p>
-            </div>
+          <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+            {services.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing / Premium */}
+      {/* Pricing Banner */}
       <section id="pricing" className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="bg-primary/5 border border-primary/20 rounded-3xl p-8 md:p-16 max-w-5xl mx-auto shadow-xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4">Paid Services</h2>
-              <p className="text-xl text-muted-foreground">Professional quality, completely managed.</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-4">
+                Paid Services
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Professional quality, completely managed.
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 mb-12">
@@ -166,7 +484,8 @@ export default function LandingPage() {
                   <h3 className="text-xl font-bold text-foreground">Server Setup Packages</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Full server setup packages are available for communities that want everything handled professionally from top to bottom.
+                  Full server setup packages are available for communities that want everything
+                  handled professionally from top to bottom.
                 </p>
               </div>
 
@@ -178,20 +497,21 @@ export default function LandingPage() {
                   <h3 className="text-xl font-bold text-foreground">Premium Custom Bots</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Premium custom bot work is available for advanced, custom requirements and complex API integrations.
+                  Premium custom bot work is available for advanced, custom requirements and complex
+                  API integrations.
                 </p>
               </div>
             </div>
 
             <div className="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-8 text-white text-center shadow-lg relative overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
               <div className="relative z-10 space-y-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/20 mb-2">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold">Bot Hosting — Free for Life</h3>
                 <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto font-medium">
-                  All bots built or set up through our service are hosted at no cost, forever. No subscriptions, no fees.
+                  All bots built or set up through our service are hosted at no cost, forever. No
+                  subscriptions, no fees.
                 </p>
               </div>
             </div>
@@ -199,16 +519,78 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Other Options */}
+      <section id="other" className="py-24 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20 mb-2">
+              <Sparkles className="w-4 h-4" />
+              <span>Additional Services</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              Other Options Available
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Beyond our core services, we offer a range of extra support and specialized work.
+              Ask about any of these in our Discord.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto">
+            {otherOptions.map((option) => {
+              const Icon = option.icon;
+              return (
+                <div
+                  key={option.title}
+                  className="group bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-lg hover:border-primary/40 transition-all duration-300"
+                  data-testid={`card-option-${option.title.toLowerCase().replace(/\s+/g, "-")}`}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-base font-bold text-foreground mb-2">{option.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {option.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-muted-foreground mb-6">
+              Don't see what you need? Just ask — we handle a wide range of custom work.
+            </p>
+            <a
+              href="https://discord.gg/life3760"
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-other-discord"
+            >
+              <Button variant="outline" size="lg" className="rounded-full gap-2 border-2 hover:bg-secondary h-12 px-8">
+                <SiDiscord className="w-5 h-5 text-primary" />
+                Ask About Custom Work
+              </Button>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* About */}
-      <section id="about" className="py-24 bg-secondary/30">
+      <section id="about" className="py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-2">
               <Globe className="w-8 h-8 text-primary" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">About Life3760</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              About Life3760
+            </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Community-driven service focused on Discord growth and technical support. We help individuals and communities build, grow, and manage their Discord presence. Whether you're starting fresh or scaling up, we provide the tools, templates, and expertise you need.
+              Community-driven service focused on Discord growth and technical support. We help
+              individuals and communities build, grow, and manage their Discord presence. Whether
+              you're starting fresh or scaling up, we provide the tools, templates, and expertise
+              you need.
             </p>
           </div>
         </div>
@@ -220,13 +602,24 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 relative z-10 text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <SiDiscord className="w-20 h-20 text-primary mx-auto opacity-90" />
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Everything starts in Discord</h2>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
+              Everything starts in Discord
+            </h2>
             <p className="text-xl md:text-2xl text-background/80 font-medium max-w-2xl mx-auto leading-relaxed">
-              All services, support, and community access are available through our Discord server. Join now to browse our offerings, get help, and connect with the team.
+              All services, support, and community access are available through our Discord server.
+              Join now to browse our offerings, get help, and connect with the team.
             </p>
             <div className="pt-8">
-              <a href="https://discord.gg/life3760" target="_blank" rel="noreferrer" data-testid="link-cta-discord">
-                <Button size="lg" className="rounded-full text-lg h-16 px-10 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-2xl shadow-primary/20 gap-3">
+              <a
+                href="https://discord.gg/life3760"
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-cta-discord"
+              >
+                <Button
+                  size="lg"
+                  className="rounded-full text-lg h-16 px-10 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-all shadow-2xl shadow-primary/20 gap-3"
+                >
                   <SiDiscord className="w-6 h-6" />
                   Join the Community
                 </Button>
@@ -240,13 +633,25 @@ export default function LandingPage() {
       <section id="contact" className="py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">Get in Touch</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              Get in Touch
+            </h2>
             <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
               <p className="text-xl text-muted-foreground mb-8">
-                The best way to reach us is through Discord. Join the server for the fastest response.
+                The best way to reach us is through Discord. Join the server for the fastest
+                response.
               </p>
-              <a href="https://discord.gg/life3760" target="_blank" rel="noreferrer" data-testid="link-contact-discord">
-                <Button variant="outline" size="lg" className="rounded-full gap-2 text-base h-14 px-8 border-2 hover:bg-secondary">
+              <a
+                href="https://discord.gg/life3760"
+                target="_blank"
+                rel="noreferrer"
+                data-testid="link-contact-discord"
+              >
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full gap-2 text-base h-14 px-8 border-2 hover:bg-secondary"
+                >
                   <SiDiscord className="w-5 h-5 text-primary" />
                   Message us on Discord
                 </Button>
@@ -260,12 +665,22 @@ export default function LandingPage() {
       <footer className="py-12 border-t border-border bg-secondary/50">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <img src={logoSrc} alt="Life3760 Logo" className="h-8 w-auto rounded object-contain bg-primary" />
+            <img
+              src={logoSrc}
+              alt="Life3760 Logo"
+              className="h-8 w-auto rounded object-contain bg-primary"
+            />
             <span className="font-bold text-foreground">Life3760 Material & Services</span>
           </div>
-          
+
           <div className="flex items-center gap-6">
-            <a href="https://discord.gg/life3760" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors" data-testid="link-footer-discord">
+            <a
+              href="https://discord.gg/life3760"
+              target="_blank"
+              rel="noreferrer"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              data-testid="link-footer-discord"
+            >
               <SiDiscord className="w-6 h-6" />
             </a>
           </div>
