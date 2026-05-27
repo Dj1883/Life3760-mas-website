@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { SiDiscord } from "react-icons/si";
 import {
@@ -450,10 +451,10 @@ function ServiceCard({
               <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">
                 Pricing
               </h4>
-              <div className="flex items-start gap-2 mb-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg px-3 py-2.5">
-                <span className="text-amber-500 mt-0.5 flex-shrink-0">⚠</span>
-                <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug font-medium">
-                  Paid plans and options coming soon! Until then, all features are free.
+              <div className="flex items-start gap-2 mb-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg px-3 py-2.5">
+                <span className="text-emerald-500 mt-0.5 flex-shrink-0">✓</span>
+                <p className="text-xs text-emerald-700 dark:text-emerald-400 leading-snug font-medium">
+                  All paid options are currently free until further notice.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -940,8 +941,16 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
-        <div className="container mx-auto px-4 mt-8 pt-8 border-t border-border/50 text-center md:text-left text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Life3760 Material & Services. All rights reserved.
+        <div className="container mx-auto px-4 mt-8 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
+          <span>&copy; {new Date().getFullYear()} Life3760 Material &amp; Services. All rights reserved.</span>
+          <div className="flex items-center gap-5">
+            <Link href="/terms" className="hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
+            <Link href="/privacy" className="hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
