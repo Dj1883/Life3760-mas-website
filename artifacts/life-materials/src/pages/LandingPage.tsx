@@ -148,7 +148,7 @@ const services = [
     includes: [
       "Custom landing page design",
       "Multi-page website builds",
-      "Domain linking & SSL setup",
+      "Free subdomain included (or bring your own domain)",
       "Ongoing hosting & uptime monitoring",
       "Content updates on request",
       "Discord-linked contact / invite integration",
