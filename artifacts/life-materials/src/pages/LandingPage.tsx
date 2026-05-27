@@ -158,7 +158,8 @@ const services = [
       { label: "Multi-Page", price: "$50", note: "Up to 5 pages, custom design", recommended: false, bestValue: true },
       { label: "Custom Build", price: "Quote", note: "Complex requirements, bespoke features", recommended: false, bestValue: false },
     ],
-    badge: "New",
+    badge: "Coming Soon",
+    unavailable: true,
   },
   {
     id: "discord-help",
@@ -473,6 +474,15 @@ function ServiceCard({
               <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">
                 Pricing
               </h4>
+              {(service as { unavailable?: boolean }).unavailable ? (
+                <div className="flex items-start gap-2 bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-300 dark:border-zinc-700 rounded-lg px-4 py-3">
+                  <span className="text-zinc-500 mt-0.5 flex-shrink-0">⏸</span>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-snug font-medium">
+                    This service is currently unavailable. Check back soon or ask in Discord for updates.
+                  </p>
+                </div>
+              ) : (
+                <>
               <div className="flex items-start gap-2 mb-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg px-3 py-2.5">
                 <span className="text-emerald-500 mt-0.5 flex-shrink-0">✓</span>
                 <p className="text-xs text-emerald-700 dark:text-emerald-400 leading-snug font-medium">
@@ -509,6 +519,8 @@ function ServiceCard({
                   </div>
                 ))}
               </div>
+                </>
+              )}
             </div>
 
             <a
