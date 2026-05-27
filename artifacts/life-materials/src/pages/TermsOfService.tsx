@@ -18,7 +18,7 @@ export default function TermsOfService() {
             </Link>
             <div className="flex items-center gap-2">
               <img src={logoSrc} alt="Life3760 Logo" className="h-7 w-auto rounded object-contain bg-primary" />
-              <span className="font-bold text-foreground text-sm hidden sm:inline">Life3760 Material &amp; Services</span>
+              <span className="font-bold text-foreground text-sm hidden sm:inline">Life3760's Materials &amp; Services</span>
             </div>
           </div>
           <ThemeToggle />
@@ -34,14 +34,14 @@ export default function TermsOfService() {
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using the Life3760 Material &amp; Services website or any of our services delivered via Discord, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use our services.
+              By accessing or using the Life3760's Materials &amp; Services website or any of our services delivered via Discord, you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use our services.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">2. Services Provided</h2>
             <p>
-              Life3760 Material &amp; Services offers Discord-focused services including, but not limited to: Discord server setups, custom Discord bot development, graphics &amp; branding packs, server templates, bot configuration &amp; integration, and community consulting. All services are delivered through our Discord server at{" "}
+              Life3760's Materials &amp; Services offers Discord-focused services including, but not limited to: Discord server setups, custom Discord bot development, graphics &amp; branding packs, server templates, bot configuration &amp; integration, and community consulting. All services are delivered through our Discord server at{" "}
               <a href="https://discord.gg/cgs76nsZAa" target="_blank" rel="noreferrer" className="text-primary hover:underline">
                 discord.gg/cgs76nsZAa
               </a>.
@@ -68,14 +68,14 @@ export default function TermsOfService() {
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">5. Bot Hosting</h2>
             <p>
-              Any Discord bot built or configured by Life3760 Material &amp; Services is hosted on our infrastructure at no cost for as long as the service remains operational. We do not guarantee perpetual uptime but will make reasonable efforts to keep hosted bots online. We reserve the right to discontinue hosting with reasonable notice.
+              Any Discord bot built or configured by Life3760's Materials &amp; Services is hosted on our infrastructure at no cost for as long as the service remains operational. We do not guarantee perpetual uptime but will make reasonable efforts to keep hosted bots online. We reserve the right to discontinue hosting with reasonable notice.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">6. Intellectual Property</h2>
             <p>
-              Upon delivery and full payment (where applicable) of a service, the client owns the deliverables. Life3760 Material &amp; Services retains the right to display work in portfolios or promotional materials unless explicitly agreed otherwise.
+              Upon delivery and full payment (where applicable) of a service, the client owns the deliverables. Life3760's Materials &amp; Services retains the right to display work in portfolios or promotional materials unless explicitly agreed otherwise.
             </p>
             <p>
               You may not resell, redistribute, or represent our work as your own without prior written permission.
@@ -106,7 +106,7 @@ export default function TermsOfService() {
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">9. Limitation of Liability</h2>
             <p>
-              To the fullest extent permitted by law, Life3760 Material &amp; Services shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.
+              To the fullest extent permitted by law, Life3760's Materials &amp; Services shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services.
             </p>
           </section>
 
@@ -132,7 +132,7 @@ export default function TermsOfService() {
 
       <footer className="py-8 border-t border-border bg-secondary/50 mt-16">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Life3760 Material &amp; Services. All rights reserved.
+          &copy; {new Date().getFullYear()} Life3760's Materials &amp; Services. All rights reserved.
         </div>
       </footer>
     </div>

@@ -962,7 +962,7 @@ export default function LandingPage() {
               alt="Life3760 Logo"
               className="h-8 w-auto rounded object-contain bg-primary"
             />
-            <span className="font-bold text-foreground">Life3760 Material & Services</span>
+            <span className="font-bold text-foreground">Life3760's Materials & Services</span>
           </div>
 
           <div className="flex items-center gap-6">
@@ -978,7 +978,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="container mx-auto px-4 mt-8 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
-          <span>&copy; {new Date().getFullYear()} Life3760 Material &amp; Services. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} Life3760's Materials &amp; Services. All rights reserved.</span>
           <div className="flex items-center gap-5">
             <Link href="/terms" className="hover:text-primary transition-colors">
               Terms of Service

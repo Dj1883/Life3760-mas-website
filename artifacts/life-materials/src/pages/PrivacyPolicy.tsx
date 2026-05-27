@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
             </Link>
             <div className="flex items-center gap-2">
               <img src={logoSrc} alt="Life3760 Logo" className="h-7 w-auto rounded object-contain bg-primary" />
-              <span className="font-bold text-foreground text-sm hidden sm:inline">Life3760 Material &amp; Services</span>
+              <span className="font-bold text-foreground text-sm hidden sm:inline">Life3760's Materials &amp; Services</span>
             </div>
           </div>
           <ThemeToggle />
@@ -34,7 +34,7 @@ export default function PrivacyPolicy() {
           <section className="space-y-3">
             <h2 className="text-xl font-semibold text-foreground">1. Overview</h2>
             <p>
-              Life3760 Material &amp; Services ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you visit our website or interact with us through Discord.
+              Life3760's Materials &amp; Services ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we handle information when you visit our website or interact with us through Discord.
             </p>
             <p>
               We keep things simple: we do not run accounts, collect passwords, or store personal data on our website. Our primary communication channel is Discord, and any information you share there is subject to{" "}
@@ -130,7 +130,7 @@ export default function PrivacyPolicy() {
 
       <footer className="py-8 border-t border-border bg-secondary/50 mt-16">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Life3760 Material &amp; Services. All rights reserved.
+          &copy; {new Date().getFullYear()} Life3760's Materials &amp; Services. All rights reserved.
         </div>
       </footer>
     </div>
