@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { SiDiscord } from "react-icons/si";
 import {
@@ -26,6 +26,8 @@ import {
   Shield,
   RefreshCw,
   HelpCircle,
+  Sun,
+  Moon,
 } from "lucide-react";
 import logoSrc from "@assets/lv_0_20260525183834_1779812038578.jpg";
 
@@ -477,7 +479,7 @@ function ServiceCard({
             </div>
 
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid={`link-service-discord-${service.id}`}
@@ -495,6 +497,23 @@ function ServiceCard({
 }
 
 export default function LandingPage() {
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("theme") as "light" | "dark") ?? "dark";
+    }
+    return "dark";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const [currency, setCurrency] = useState<string>(() => detectCurrency());
 
   const rates: Record<string, number> = {
@@ -568,9 +587,21 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              data-testid="button-theme-toggle"
+              aria-label="Toggle dark mode"
+              className="w-9 h-9 rounded-full flex items-center justify-center border border-border bg-secondary hover:bg-accent hover:border-primary/40 transition-colors"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-primary" />
+              )}
+            </button>
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid="link-nav-discord"
@@ -608,7 +639,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <a
-                href="https://discord.gg/cgs76nsZAa"
+                href="https://discord.life3760-mas.org"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-hero-discord"
@@ -766,7 +797,7 @@ export default function LandingPage() {
               Don't see what you need? Just ask — we handle a wide range of custom work.
             </p>
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid="link-other-discord"
@@ -805,7 +836,7 @@ export default function LandingPage() {
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-6">Still have a question we didn't cover?</p>
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               data-testid="link-faq-discord"
@@ -854,7 +885,7 @@ export default function LandingPage() {
             </p>
             <div className="pt-8">
               <a
-                href="https://discord.gg/cgs76nsZAa"
+                href="https://discord.life3760-mas.org"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-cta-discord"
@@ -885,7 +916,7 @@ export default function LandingPage() {
                 response.
               </p>
               <a
-                href="https://discord.gg/cgs76nsZAa"
+                href="https://discord.life3760-mas.org"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-contact-discord"
@@ -918,7 +949,7 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-6">
             <a
-              href="https://discord.gg/cgs76nsZAa"
+              href="https://discord.life3760-mas.org"
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
