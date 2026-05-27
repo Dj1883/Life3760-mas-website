@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: life3760-mas-website
+    env: static
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @workspace/life-materials run build
+    staticPublishPath: artifacts/life-materials/dist/public
+    pullRequestPreviewsEnabled: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
