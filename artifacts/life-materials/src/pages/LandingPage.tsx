@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SiDiscord } from "react-icons/si";
 import {
@@ -26,8 +26,6 @@ import {
   Shield,
   RefreshCw,
   HelpCircle,
-  Moon,
-  Sun,
 } from "lucide-react";
 import logoSrc from "@assets/lv_0_20260525183834_1779812038578.jpg";
 
@@ -48,9 +46,9 @@ const services = [
       "Custom branding & styling",
     ],
     tiers: [
-      { label: "Basic", price: "Free", note: "Self-guided template + tips via Discord", recommended: false, bestValue: false },
-      { label: "Standard", price: "$15", note: "Full setup handled by our team", recommended: true, bestValue: false },
-      { label: "Premium", price: "$35", note: "Advanced setup with custom branding & bots", recommended: false, bestValue: true },
+      { label: "Basic", price: "Free", note: "Self-guided template + tips via Discord" },
+      { label: "Standard", price: "$15", note: "Full setup handled by our team" },
+      { label: "Premium", price: "$35", note: "Advanced setup with custom branding & bots" },
     ],
     badge: null,
   },
@@ -70,9 +68,9 @@ const services = [
       "Lifetime free hosting included",
     ],
     tiers: [
-      { label: "Simple Bot", price: "$4", note: "Basic commands & auto-responses", recommended: true, bestValue: false },
-      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with advanced commands", recommended: false, bestValue: true },
-      { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations", recommended: false, bestValue: false },
+      { label: "Simple Bot", price: "$4", note: "Basic commands & auto-responses" },
+      { label: "Feature Bot", price: "$45", note: "Multi-feature bot with advanced commands" },
+      { label: "Full Custom", price: "Quote", note: "Complex systems, API integrations" },
     ],
     badge: "Free Hosting",
   },
@@ -92,8 +90,8 @@ const services = [
       "Ready-to-paste text formats",
     ],
     tiers: [
-      { label: "Community Pack", price: "Free", note: "Standard templates via Discord", recommended: true, bestValue: false },
-      { label: "Custom Pack", price: "$10", note: "Tailored to your brand & niche", recommended: false, bestValue: true },
+      { label: "Community Pack", price: "Free", note: "Standard templates via Discord" },
+      { label: "Custom Pack", price: "$10", note: "Tailored to your brand & niche" },
     ],
     badge: null,
   },
@@ -113,8 +111,8 @@ const services = [
       "Basic bot setup included",
     ],
     tiers: [
-      { label: "Standard Prebuilt", price: "Free", note: "Pick from available templates", recommended: true, bestValue: false },
-      { label: "Custom Prebuilt", price: "$25", note: "Built to your niche & requirements", recommended: false, bestValue: true },
+      { label: "Standard Prebuilt", price: "Free", note: "Pick from available templates" },
+      { label: "Custom Prebuilt", price: "$25", note: "Built to your niche & requirements" },
     ],
     badge: null,
   },
@@ -134,8 +132,8 @@ const services = [
       "Post-setup guidance",
     ],
     tiers: [
-      { label: "Basic Config", price: "Free", note: "Single bot, standard setup", recommended: true, bestValue: false },
-      { label: "Full Integration", price: "$10", note: "Multi-bot, advanced configuration", recommended: false, bestValue: true },
+      { label: "Basic Config", price: "Free", note: "Single bot, standard setup" },
+      { label: "Full Integration", price: "$10", note: "Multi-bot, advanced configuration" },
     ],
     badge: null,
   },
@@ -155,7 +153,7 @@ const services = [
       "Community Q&A access",
     ],
     tiers: [
-      { label: "Community Help", price: "Free", note: "Ask anything in our Discord server", recommended: true, bestValue: false },
+      { label: "Community Help", price: "Free", note: "Ask anything in our Discord server" },
     ],
     badge: "Always Free",
   },
@@ -459,28 +457,16 @@ function ServiceCard({
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {service.tiers.map((tier) => (
+                {service.tiers.map((tier, i) => (
                   <div
                     key={tier.label}
-                    className={`relative rounded-xl p-4 border text-center ${
-                      tier.recommended
-                        ? "border-primary/60 bg-primary/8 shadow-md"
-                        : tier.bestValue
-                        ? "border-emerald-500/50 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-md"
+                    className={`rounded-xl p-4 border text-center ${
+                      i === 1 && service.tiers.length > 1
+                        ? "border-primary/50 bg-primary/8 shadow-md"
                         : "border-border bg-secondary/50"
                     }`}
                   >
-                    {tier.recommended && (
-                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap inline-flex items-center gap-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
-                        ★ Recommended
-                      </span>
-                    )}
-                    {tier.bestValue && (
-                      <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap inline-flex items-center gap-1 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full">
-                        ✦ Best Value
-                      </span>
-                    )}
-                    <div className={`text-xs font-semibold uppercase tracking-wider mb-1 ${tier.recommended ? "text-primary" : tier.bestValue ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`}>
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                       {tier.label}
                     </div>
                     <div className="text-2xl font-bold text-foreground mb-1">{formatPrice(tier.price, rates, currency)}</div>
@@ -491,7 +477,7 @@ function ServiceCard({
             </div>
 
             <a
-              href="https://discord.life3760-mas.org"
+              href="https://discord.gg/cgs76nsZAa"
               target="_blank"
               rel="noreferrer"
               data-testid={`link-service-discord-${service.id}`}
@@ -509,18 +495,6 @@ function ServiceCard({
 }
 
 export default function LandingPage() {
-  const [dark, setDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    const stored = localStorage.getItem("theme");
-    if (stored) return stored === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [dark]);
-
   const [currency, setCurrency] = useState<string>(() => detectCurrency());
 
   const rates: Record<string, number> = {
@@ -594,17 +568,9 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setDark(!dark)}
-              aria-label="Toggle dark mode"
-              data-testid="button-toggle-dark"
-              className="w-9 h-9 rounded-full flex items-center justify-center border border-border bg-secondary hover:bg-primary/10 hover:border-primary/40 hover:text-primary transition-colors"
-            >
-              {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
+          <div className="flex items-center gap-4">
             <a
-              href="https://discord.life3760-mas.org"
+              href="https://discord.gg/cgs76nsZAa"
               target="_blank"
               rel="noreferrer"
               data-testid="link-nav-discord"
@@ -642,7 +608,7 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <a
-                href="https://discord.life3760-mas.org"
+                href="https://discord.gg/cgs76nsZAa"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-hero-discord"
@@ -800,7 +766,7 @@ export default function LandingPage() {
               Don't see what you need? Just ask — we handle a wide range of custom work.
             </p>
             <a
-              href="https://discord.life3760-mas.org"
+              href="https://discord.gg/cgs76nsZAa"
               target="_blank"
               rel="noreferrer"
               data-testid="link-other-discord"
@@ -839,7 +805,7 @@ export default function LandingPage() {
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-6">Still have a question we didn't cover?</p>
             <a
-              href="https://discord.life3760-mas.org"
+              href="https://discord.gg/cgs76nsZAa"
               target="_blank"
               rel="noreferrer"
               data-testid="link-faq-discord"
@@ -888,7 +854,7 @@ export default function LandingPage() {
             </p>
             <div className="pt-8">
               <a
-                href="https://discord.life3760-mas.org"
+                href="https://discord.gg/cgs76nsZAa"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-cta-discord"
@@ -919,7 +885,7 @@ export default function LandingPage() {
                 response.
               </p>
               <a
-                href="https://discord.life3760-mas.org"
+                href="https://discord.gg/cgs76nsZAa"
                 target="_blank"
                 rel="noreferrer"
                 data-testid="link-contact-discord"
@@ -952,7 +918,7 @@ export default function LandingPage() {
 
           <div className="flex items-center gap-6">
             <a
-              href="https://discord.life3760-mas.org"
+              href="https://discord.gg/cgs76nsZAa"
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
