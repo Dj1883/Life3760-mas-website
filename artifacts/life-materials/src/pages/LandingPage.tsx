@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { SiDiscord } from "react-icons/si";
 import {
   Server,
@@ -615,7 +616,8 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <a
               href="https://discord.gg/cgs76nsZAa"
               target="_blank"

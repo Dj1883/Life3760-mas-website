@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { ArrowLeft } from "lucide-react";
 import logoSrc from "@assets/lv_0_20260525183834_1779812038578.jpg";
 
@@ -7,17 +8,20 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center gap-4">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="gap-2 rounded-full">
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </Button>
-          </Link>
-          <div className="flex items-center gap-2">
-            <img src={logoSrc} alt="Life3760 Logo" className="h-7 w-auto rounded object-contain bg-primary" />
-            <span className="font-bold text-foreground text-sm">Life3760 Material &amp; Services</span>
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Link href="/">
+              <Button variant="ghost" size="sm" className="gap-2 rounded-full">
+                <ArrowLeft className="w-4 h-4" />
+                Back
+              </Button>
+            </Link>
+            <div className="flex items-center gap-2">
+              <img src={logoSrc} alt="Life3760 Logo" className="h-7 w-auto rounded object-contain bg-primary" />
+              <span className="font-bold text-foreground text-sm hidden sm:inline">Life3760 Material &amp; Services</span>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
 
