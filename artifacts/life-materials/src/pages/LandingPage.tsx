@@ -139,6 +139,28 @@ const services = [
     badge: null,
   },
   {
+    id: "website-hosting",
+    icon: Globe,
+    title: "Website Hosting & Development",
+    summary: "Simple websites and hosting, built and managed for you.",
+    description:
+      "We design, build, and host websites for individuals, communities, and small businesses. Whether you need a clean landing page, a link-in-bio style site, or a full multi-page web presence, we handle everything — from layout and content to deployment and ongoing hosting.",
+    includes: [
+      "Custom landing page design",
+      "Multi-page website builds",
+      "Domain linking & SSL setup",
+      "Ongoing hosting & uptime monitoring",
+      "Content updates on request",
+      "Discord-linked contact / invite integration",
+    ],
+    tiers: [
+      { label: "Landing Page", price: "$20", note: "Single-page site, designed & hosted", recommended: true, bestValue: false },
+      { label: "Multi-Page", price: "$50", note: "Up to 5 pages, custom design", recommended: false, bestValue: true },
+      { label: "Custom Build", price: "Quote", note: "Complex requirements, bespoke features", recommended: false, bestValue: false },
+    ],
+    badge: "New",
+  },
+  {
     id: "discord-help",
     icon: MessageSquare,
     title: "General Discord Help",
